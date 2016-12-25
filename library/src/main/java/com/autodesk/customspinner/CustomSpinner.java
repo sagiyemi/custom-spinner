@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by sagiyemini on 25/12/2016.
  */
 
-public class CustomSpinner extends LinearLayout implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "CustomSpinner";
 
@@ -28,8 +28,9 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
     private TextView mTitle;
     private ImageView mIcon;
 
-    private CustomSpinnerAdapter mAdapter;
+    private CustomSpinnerAdapter<T> mAdapter;
     private ListPopupWindow mPopup;
+    private OnItemSelectedListener<T> mOnItemSelectedListener;
 
     public CustomSpinner(Context context) {
         this(context, null);
@@ -72,12 +73,16 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
         mIcon.setPadding(mDrawablePaddingLeft, mDrawablePaddingTop, mDrawablePaddingRight, mDrawablePaddingBottom);
     }
 
-    public void setAdapter(CustomSpinnerAdapter adapter) {
+    public void setAdapter(CustomSpinnerAdapter<T> adapter) {
         mAdapter = adapter;
         mAdapter.setHideSelectedItem(mHideSelectedItem);
         mPopup.setAdapter(mAdapter);
         mIcon.setVisibility(isMultiItem() ? VISIBLE : GONE);
         setSelectedItem(0);
+    }
+
+    public void setOnItemSelectedListener(OnItemSelectedListener<T> onItemSelectedListener) {
+        mOnItemSelectedListener = onItemSelectedListener;
     }
 
     @Override
@@ -103,10 +108,19 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         setSelectedItem(position);
         mPopup.dismiss();
+        if (mOnItemSelectedListener != null) {
+            mOnItemSelectedListener.itemSelected(mAdapter.getSelectedItem());
+        }
     }
 
     private void setSelectedItem(int position) {
         mAdapter.setSelectedItem(position);
+        mAdapter.notifyDataSetChanged();
+        mTitle.setText(mAdapter.getSelectedItemTitle());
+    }
+
+    public void setInitialSelectedItem(int position) {
+        mAdapter.setInitialSelectedItem(position);
         mAdapter.notifyDataSetChanged();
         mTitle.setText(mAdapter.getSelectedItemTitle());
     }

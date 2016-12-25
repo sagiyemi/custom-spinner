@@ -6,6 +6,6 @@ package com.autodesk.customspinner;
 
 public interface SpinnerDropDownItem {
 
-    String title();
+    String spinnerTitle();
 
 }

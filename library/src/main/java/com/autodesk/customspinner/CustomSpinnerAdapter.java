@@ -73,12 +73,21 @@ public class CustomSpinnerAdapter<T extends SpinnerDropDownItem> extends BaseAda
     }
 
     public String getSelectedItemTitle() {
-        return mItems.get(mSelectedItemPosition).title();
+        return mItems.get(mSelectedItemPosition).spinnerTitle();
+    }
+
+    public void setInitialSelectedItem(int selectedItemPosition) {
+        mSelectedItemPosition = selectedItemPosition;
+        invalidateVisibleItemsList();
     }
 
     public void setSelectedItem(int selectedItemPosition) {
         mSelectedItemPosition = findSelectedItemPosition(selectedItemPosition);
         invalidateVisibleItemsList();
+    }
+
+    public T getSelectedItem() {
+        return mItems.get(mSelectedItemPosition);
     }
 
     private int findSelectedItemPosition(int selectedItemPosition) {
