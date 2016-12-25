@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+//        adapter.addAll(Arrays.asList("Only one item"));
         adapter.addAll(Arrays.asList("First", "Second", "Third", "Forth", "Fifth", "Some longer title"));
         spinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
