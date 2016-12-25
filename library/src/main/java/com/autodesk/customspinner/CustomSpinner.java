@@ -5,7 +5,6 @@ import android.support.v7.widget.ListPopupWindow;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
     private TextView mTitle;
     private ImageView mIcon;
 
-    private ArrayAdapter<T> mAdapter;
+    private CustomSpinnerAdapter mAdapter;
     private ListPopupWindow mPopup;
 
     private int mSelectedItemPosition = NO_ITEM_SELECTED;
@@ -54,7 +53,7 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mPopup.setHeight(700);
     }
 
-    public void setAdapter(ArrayAdapter<T> adapter) {
+    public void setAdapter(CustomSpinnerAdapter adapter) {
         mAdapter = adapter;
         mPopup.setAdapter(mAdapter);
         if (mSelectedItemPosition == NO_ITEM_SELECTED) {
@@ -91,5 +90,4 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mSelectedItemPosition = position;
         mTitle.setText(mAdapter.getItem(mSelectedItemPosition).title());
     }
-
 }

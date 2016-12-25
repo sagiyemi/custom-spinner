@@ -10,9 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.autodesk.customspinner.CustomSpinner;
+import com.autodesk.customspinner.CustomSpinnerAdapter;
 import com.autodesk.customspinner.DescriptionSpinnerDropDownItem;
+import com.autodesk.customspinner.ViewBinder;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,17 +25,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.spinner);
-        ArrayAdapter<DescriptionSpinnerDropDownItem> adapter = new DescriptionAdapter<>(this, R.layout.spinner_dropdown_item);
-//        adapter.addAll(Arrays.asList("Only one item"));
-        adapter.addAll(Arrays.asList(
+//        ArrayAdapter<DescriptionSpinnerDropDownItem> adapter = new DescriptionAdapter<>(this, R.layout.spinner_dropdown_item);
+
+        final List<Item> items = Arrays.asList(
                 new Item("First", "Description"),
                 new Item("Second", "Second Second Second description"),
                 new Item("Third", "Third Description"),
                 new Item("Forth", "Forth-description"),
                 new Item("Fifth", "Fifth Description"),
-                new Item("Some longer title", "Some longer description")));
+                new Item("Some longer title", "Some longer description")
+        );
+
+        CustomSpinnerAdapter<Item> adapter = new CustomSpinnerAdapter<>(R.layout.spinner_dropdown_item, new ViewBinder<Item>() {
+            @Override
+            public void bindView(View view, Item item) {
+                final TextView title = (TextView) view.findViewById(R.id.item_title);
+                title.setText(item.title());
+                final TextView description = (TextView) view.findViewById(R.id.item_description);
+                description.setText(item.description());
+            }
+        });
+        adapter.addAll(items);
+
         spinner.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
 
     private class Item implements DescriptionSpinnerDropDownItem {
