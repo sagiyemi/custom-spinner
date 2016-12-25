@@ -53,8 +53,8 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mPopup = new ListPopupWindow(context);
         mPopup.setOnItemClickListener(this);
         mPopup.setAnchorView(this);
-        mPopup.setWidth(500);
-        mPopup.setHeight(600);
+        mPopup.setWidth(400);
+        mPopup.setHeight(ListPopupWindow.WRAP_CONTENT);
         mPopup.setModal(true);
 
         TypedArray attr = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinner, 0, 0);

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void bindView(View view, Item item) {
                         final TextView title = (TextView) view.findViewById(R.id.item_title);
-                        title.setText(item.title());
+                        title.setText(item.spinnerTitle());
                         final TextView description = (TextView) view.findViewById(R.id.item_description);
                         description.setText(item.description());
                     }
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public String title() {
+        public String spinnerTitle() {
             return this.mTitle;
         }
 
