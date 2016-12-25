@@ -67,6 +67,7 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
 
         attr.recycle();
 
+        mIcon.setVisibility(GONE);
         mIcon.setImageResource(mDrawableRight);
         mIcon.setPadding(mDrawablePaddingLeft, mDrawablePaddingTop, mDrawablePaddingRight, mDrawablePaddingBottom);
     }
@@ -75,10 +76,8 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
         mAdapter = adapter;
         mAdapter.setHideSelectedItem(mHideSelectedItem);
         mPopup.setAdapter(mAdapter);
-        if (adapter != null) {
-            mIcon.setVisibility(isMultiItem() ? VISIBLE : GONE);
-            setSelectedItem(0);
-        }
+        mIcon.setVisibility(isMultiItem() ? VISIBLE : GONE);
+        setSelectedItem(0);
     }
 
     @Override
