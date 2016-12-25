@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.autodesk.customspinner.CustomSpinner;
-import com.autodesk.customspinner.SpinnerDropDownItem;
+import com.autodesk.customspinner.DescriptionSpinnerDropDownItem;
 
 import java.util.Arrays;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.spinner);
-        ArrayAdapter<SpinnerDropDownItem> adapter = new DescriptionAdapter<>(this, R.layout.spinner_dropdown_item);
+        ArrayAdapter<DescriptionSpinnerDropDownItem> adapter = new DescriptionAdapter<>(this, R.layout.spinner_dropdown_item);
 //        adapter.addAll(Arrays.asList("Only one item"));
         adapter.addAll(Arrays.asList(
                 new Item("First", "Description"),
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private class Item implements SpinnerDropDownItem {
+    private class Item implements DescriptionSpinnerDropDownItem {
 
         private final String mTitle;
         private final String mDescription;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class DescriptionAdapter<T extends SpinnerDropDownItem> extends ArrayAdapter<T> {
+    private class DescriptionAdapter<T extends DescriptionSpinnerDropDownItem> extends ArrayAdapter<T> {
 
         public DescriptionAdapter(Context context, int resource) {
             super(context, resource);

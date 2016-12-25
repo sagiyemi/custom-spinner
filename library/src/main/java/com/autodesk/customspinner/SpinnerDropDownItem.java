@@ -8,6 +8,4 @@ public interface SpinnerDropDownItem {
 
     String title();
 
-    String description();
-
 }
