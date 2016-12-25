@@ -1,17 +1,13 @@
 package com.autodesk.customspinner.sample;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.autodesk.customspinner.CustomSpinner;
 import com.autodesk.customspinner.CustomSpinnerAdapter;
-import com.autodesk.customspinner.DescriptionSpinnerDropDownItem;
+import com.autodesk.customspinner.SpinnerDropDownItem;
 import com.autodesk.customspinner.ViewBinder;
 
 import java.util.Arrays;
@@ -25,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final CustomSpinner spinner = (CustomSpinner) findViewById(R.id.spinner);
-//        ArrayAdapter<DescriptionSpinnerDropDownItem> adapter = new DescriptionAdapter<>(this, R.layout.spinner_dropdown_item);
 
         final List<Item> items = Arrays.asList(
                 new Item("First", "Description"),
@@ -36,21 +31,23 @@ public class MainActivity extends AppCompatActivity {
                 new Item("Some longer title", "Some longer description")
         );
 
-        CustomSpinnerAdapter<Item> adapter = new CustomSpinnerAdapter<>(R.layout.spinner_dropdown_item, new ViewBinder<Item>() {
-            @Override
-            public void bindView(View view, Item item) {
-                final TextView title = (TextView) view.findViewById(R.id.item_title);
-                title.setText(item.title());
-                final TextView description = (TextView) view.findViewById(R.id.item_description);
-                description.setText(item.description());
-            }
-        });
+        CustomSpinnerAdapter<Item> adapter = new CustomSpinnerAdapter<>(R.layout.spinner_dropdown_item,
+                new ViewBinder<Item>() {
+                    @Override
+                    public void bindView(View view, Item item) {
+                        final TextView title = (TextView) view.findViewById(R.id.item_title);
+                        title.setText(item.title());
+                        final TextView description = (TextView) view.findViewById(R.id.item_description);
+                        description.setText(item.description());
+                    }
+                });
+
         adapter.addAll(items);
 
         spinner.setAdapter(adapter);
     }
 
-    private class Item implements DescriptionSpinnerDropDownItem {
+    private class Item implements SpinnerDropDownItem {
 
         private final String mTitle;
         private final String mDescription;
@@ -65,29 +62,8 @@ public class MainActivity extends AppCompatActivity {
             return this.mTitle;
         }
 
-        @Override
         public String description() {
             return this.mDescription;
-        }
-    }
-
-    private class DescriptionAdapter<T extends DescriptionSpinnerDropDownItem> extends ArrayAdapter<T> {
-
-        public DescriptionAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final View view = getLayoutInflater().inflate(R.layout.spinner_dropdown_item, null);
-            final T item = getItem(position);
-            final TextView title = (TextView) view.findViewById(R.id.item_title);
-            title.setText(item.title());
-            final TextView description = (TextView) view.findViewById(R.id.item_description);
-            description.setText(item.description());
-
-            return view;
         }
     }
 }
