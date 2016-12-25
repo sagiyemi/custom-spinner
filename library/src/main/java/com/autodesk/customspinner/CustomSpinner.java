@@ -6,9 +6,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 /**
@@ -22,7 +22,7 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
     private TextView mTitle;
     private ImageView mIcon;
 
-    private ListAdapter mAdapter;
+    private ArrayAdapter<SpinnerDropDownItem> mAdapter;
     private ListPopupWindow mPopup;
 
     private int mSelectedItemPosition;
@@ -50,7 +50,7 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
         this.mPopup = new ListPopupWindow(getContext());
     }
 
-    public void setAdapter(ListAdapter adapter) {
+    public void setAdapter(ArrayAdapter<SpinnerDropDownItem> adapter) {
         this.mAdapter = adapter;
         this.mSelectedItemPosition = 0;
         if (adapter != null) {
@@ -89,6 +89,7 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
 
     private void setSelectedItem(int position) {
         mSelectedItemPosition = position;
-        mTitle.setText(mAdapter.getItem(mSelectedItemPosition).toString());
+        mTitle.setText(mAdapter.getItem(mSelectedItemPosition).title());
     }
+
 }
