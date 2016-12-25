@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by sagiyemini on 25/12/2016.
  */
 
-public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class CustomSpinner extends LinearLayout implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "CustomSpinner";
     private static final int NO_ITEM_SELECTED = -1;
@@ -23,6 +23,7 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
     private int mDrawablePaddingTop = Util.dpToPx(getContext(), 0f);
     private int mDrawablePaddingRight = Util.dpToPx(getContext(), 8f);
     private int mDrawablePaddingBottom = Util.dpToPx(getContext(), 0f);
+    private int mDrawableRight = R.drawable.ic_keyboard_arrow_down_white_24dp;
 
     private TextView mTitle;
     private ImageView mIcon;
@@ -54,18 +55,20 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mPopup.setOnItemClickListener(this);
         mPopup.setAnchorView(this);
         mPopup.setWidth(500);
-        mPopup.setHeight(700);
+        mPopup.setHeight(600);
         mPopup.setModal(true);
 
         TypedArray attr = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinner, 0, 0);
-        
+
         mDrawablePaddingLeft = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingLeft, mDrawablePaddingLeft);
         mDrawablePaddingTop = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingTop, mDrawablePaddingTop);
         mDrawablePaddingRight = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingRight, mDrawablePaddingRight);
         mDrawablePaddingBottom = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingBottom, mDrawablePaddingBottom);
+        mDrawableRight = attr.getResourceId(R.styleable.CustomSpinner_cs_drawable_right, mDrawableRight);
 
         attr.recycle();
 
+        mIcon.setImageResource(mDrawableRight);
         mIcon.setPadding(mDrawablePaddingLeft, mDrawablePaddingTop, mDrawablePaddingRight, mDrawablePaddingBottom);
     }
 

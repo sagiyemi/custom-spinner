@@ -10,8 +10,9 @@
 
     <com.autodesk.customspinner.CustomSpinner
         android:id="@+id/spinner"
-        app:cs_drawable_paddingLeft="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:cs_drawable_paddingLeft="8dp"
+        app:cs_drawable_right="@drawable/menu_down"/>
 
 </android.support.v7.widget.Toolbar>
