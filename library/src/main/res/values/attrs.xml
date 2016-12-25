@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomSpinner">
+        <attr name="cs_drawable_right" format="reference" />
+        <attr name="cs_drawable_paddingTop" format="dimension" />
+        <attr name="cs_drawable_paddingLeft" format="dimension" />
+        <attr name="cs_drawable_paddingRight" format="dimension" />
+        <attr name="cs_drawable_paddingBottom" format="dimension" />
+    </declare-styleable>
+
+</resources>
