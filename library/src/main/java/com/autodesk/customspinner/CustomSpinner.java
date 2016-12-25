@@ -51,6 +51,7 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mPopup.setAnchorView(this);
         mPopup.setWidth(500);
         mPopup.setHeight(700);
+        mPopup.setModal(true);
     }
 
     public void setAdapter(CustomSpinnerAdapter adapter) {
@@ -67,8 +68,12 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
 
     @Override
     public void onClick(View view) {
-        if (isMultiItem()) {
-            showDropDown();
+        if (mPopup.isShowing()) {
+            mPopup.dismiss();
+        } else {
+            if (isMultiItem()) {
+                showDropDown();
+            }
         }
     }
 
