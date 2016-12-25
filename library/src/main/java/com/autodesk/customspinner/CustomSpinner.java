@@ -17,21 +17,19 @@ import android.widget.TextView;
 public class CustomSpinner extends LinearLayout implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "CustomSpinner";
-    private static final int NO_ITEM_SELECTED = -1;
 
     private int mDrawablePaddingLeft = Util.dpToPx(getContext(), 8f);
     private int mDrawablePaddingTop = Util.dpToPx(getContext(), 0f);
     private int mDrawablePaddingRight = Util.dpToPx(getContext(), 8f);
     private int mDrawablePaddingBottom = Util.dpToPx(getContext(), 0f);
     private int mDrawableRight = R.drawable.ic_keyboard_arrow_down_white_24dp;
+    private boolean mHideSelectedItem = false;
 
     private TextView mTitle;
     private ImageView mIcon;
 
     private CustomSpinnerAdapter mAdapter;
     private ListPopupWindow mPopup;
-
-    private int mSelectedItemPosition = NO_ITEM_SELECTED;
 
     public CustomSpinner(Context context) {
         this(context, null);
@@ -65,6 +63,7 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
         mDrawablePaddingRight = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingRight, mDrawablePaddingRight);
         mDrawablePaddingBottom = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingBottom, mDrawablePaddingBottom);
         mDrawableRight = attr.getResourceId(R.styleable.CustomSpinner_cs_drawable_right, mDrawableRight);
+        mHideSelectedItem = attr.getBoolean(R.styleable.CustomSpinner_cs_hide_selected_item, mHideSelectedItem);
 
         attr.recycle();
 
@@ -74,13 +73,11 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
 
     public void setAdapter(CustomSpinnerAdapter adapter) {
         mAdapter = adapter;
+        mAdapter.setHideSelectedItem(mHideSelectedItem);
         mPopup.setAdapter(mAdapter);
-        if (mSelectedItemPosition == NO_ITEM_SELECTED) {
-            this.mSelectedItemPosition = 0;
-            if (adapter != null) {
-                mIcon.setVisibility(isMultiItem() ? VISIBLE : GONE);
-                setSelectedItem(0);
-            }
+        if (adapter != null) {
+            mIcon.setVisibility(isMultiItem() ? VISIBLE : GONE);
+            setSelectedItem(0);
         }
     }
 
@@ -110,7 +107,8 @@ public class CustomSpinner extends LinearLayout implements View.OnClickListener,
     }
 
     private void setSelectedItem(int position) {
-        mSelectedItemPosition = position;
-        mTitle.setText(mAdapter.getItem(mSelectedItemPosition).title());
+        mAdapter.setSelectedItem(position);
+        mAdapter.notifyDataSetChanged();
+        mTitle.setText(mAdapter.getSelectedItemTitle());
     }
 }

@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cs_drawable_paddingLeft="8dp"
-        app:cs_drawable_right="@drawable/menu_down"/>
+        app:cs_drawable_right="@drawable/menu_down"
+        app:cs_hide_selected_item="true"/>
 
 </android.support.v7.widget.Toolbar>
