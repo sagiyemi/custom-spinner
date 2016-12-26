@@ -1,9 +1,13 @@
 package com.autodesk.customspinner;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.ListPopupWindow;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -18,11 +22,16 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
 
     private static final String TAG = "CustomSpinner";
 
-    private int mDrawablePaddingLeft = Util.dpToPx(getContext(), 8f);
+    private int mDrawablePaddingLeft = Util.dpToPx(getContext(), 4f);
     private int mDrawablePaddingTop = Util.dpToPx(getContext(), 0f);
-    private int mDrawablePaddingRight = Util.dpToPx(getContext(), 8f);
+    private int mDrawablePaddingRight = Util.dpToPx(getContext(), 4f);
     private int mDrawablePaddingBottom = Util.dpToPx(getContext(), 0f);
     private int mDrawableRight = R.drawable.ic_keyboard_arrow_down_white_24dp;
+    private int mDropdownMaxHeight = ListPopupWindow.WRAP_CONTENT;
+    private int mDropdownVerticalOffset = Util.dpToPx(getContext(), 8f);
+    private int mDropdownWidth = Util.dpToPx(getContext(), 200f);
+    private ColorStateList mSpinnerTextColor;
+    private float mSpinnerTextSize;
     private boolean mHideSelectedItem = false;
 
     private TextView mTitle;
@@ -53,9 +62,10 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mPopup = new ListPopupWindow(context);
         mPopup.setOnItemClickListener(this);
         mPopup.setAnchorView(this);
-        mPopup.setWidth(400);
-        mPopup.setHeight(ListPopupWindow.WRAP_CONTENT);
+        mPopup.setWidth(mDropdownWidth);
+        mPopup.setHeight(mDropdownMaxHeight);
         mPopup.setModal(true);
+        mPopup.setDropDownGravity(GravityCompat.END);
 
         TypedArray attr = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinner, 0, 0);
 
@@ -65,12 +75,31 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mDrawablePaddingBottom = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_drawable_paddingBottom, mDrawablePaddingBottom);
         mDrawableRight = attr.getResourceId(R.styleable.CustomSpinner_cs_drawable_right, mDrawableRight);
         mHideSelectedItem = attr.getBoolean(R.styleable.CustomSpinner_cs_hide_selected_item, mHideSelectedItem);
+        mDropdownMaxHeight = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_max_height, mDropdownMaxHeight);
+        mDropdownWidth = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_width, mDropdownWidth);
+        mDropdownVerticalOffset = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_vertical_offset, mDropdownVerticalOffset);
+        mSpinnerTextColor = attr.getColorStateList(R.styleable.CustomSpinner_cs_spinner_text_color);
+        if (mSpinnerTextColor == null) {
+            mSpinnerTextColor = ColorStateList.valueOf(Color.WHITE);
+        }
+        mSpinnerTextSize = attr.getDimension(R.styleable.CustomSpinner_cs_spinner_text_size, getResources().getDimension(R.dimen.spinner_text_size));
+        final int openDirectionEnum = attr.getInteger(R.styleable.CustomSpinner_cs_dropdown_open_direction, 0);
+        mPopup.setDropDownGravity(openDirectionEnum == 0 ? GravityCompat.START : GravityCompat.END);
 
         attr.recycle();
 
         mIcon.setVisibility(GONE);
         mIcon.setImageResource(mDrawableRight);
         mIcon.setPadding(mDrawablePaddingLeft, mDrawablePaddingTop, mDrawablePaddingRight, mDrawablePaddingBottom);
+        mTitle.setTextColor(mSpinnerTextColor);
+        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSpinnerTextSize);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        // Offset dropdown anchor to the top of the anchor view
+        mPopup.setVerticalOffset(-getMeasuredHeight() + mDropdownVerticalOffset);
     }
 
     public void setAdapter(CustomSpinnerAdapter<T> adapter) {
@@ -116,12 +145,12 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
     private void setSelectedItem(int position) {
         mAdapter.setSelectedItem(position);
         mAdapter.notifyDataSetChanged();
-        mTitle.setText(mAdapter.getSelectedItemTitle());
+        mTitle.setText(mAdapter.getSelectedItemTitle(getResources()));
     }
 
     public void setInitialSelectedItem(int position) {
         mAdapter.setInitialSelectedItem(position);
         mAdapter.notifyDataSetChanged();
-        mTitle.setText(mAdapter.getSelectedItemTitle());
+        mTitle.setText(mAdapter.getSelectedItemTitle(getResources()));
     }
 }

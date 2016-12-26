@@ -1,6 +1,7 @@
 package com.autodesk.customspinner;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -67,13 +68,18 @@ public class CustomSpinnerAdapter<T extends SpinnerDropDownItem> extends BaseAda
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) viewGroup.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View view1 = inflater.inflate(mLayoutResId, null);
+        final View view1 = inflater.inflate(mLayoutResId, viewGroup, false);
         mViewBinder.bindView(view1, getItem(position));
         return view1;
     }
 
-    public String getSelectedItemTitle() {
-        return mItems.get(mSelectedItemPosition).spinnerTitle();
+    public String getSelectedItemTitle(Resources resources) {
+        final T item = mItems.get(mSelectedItemPosition);
+        if (item.spinnerTitleResId() != 0) {
+            return resources.getString(item.spinnerTitleResId());
+        } else {
+            return item.spinnerTitle();
+        }
     }
 
     public void setInitialSelectedItem(int selectedItemPosition) {

@@ -8,6 +8,15 @@
         <attr name="cs_drawable_paddingLeft" format="dimension"/>
         <attr name="cs_drawable_paddingRight" format="dimension"/>
         <attr name="cs_drawable_paddingBottom" format="dimension"/>
+        <attr name="cs_dropdown_max_height" format="dimension"/>
+        <attr name="cs_dropdown_width" format="dimension"/>
+        <attr name="cs_dropdown_vertical_offset" format="dimension"/>
+        <attr name="cs_dropdown_open_direction" format="enum">
+            <enum name="right" value="0"/>
+            <enum name="left" value="1"/>
+        </attr>
+        <attr name="cs_spinner_text_color" format="reference|color"/>
+        <attr name="cs_spinner_text_size" format="dimension"/>
     </declare-styleable>
 
 </resources>
