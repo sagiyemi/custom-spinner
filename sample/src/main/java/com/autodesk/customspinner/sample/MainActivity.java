@@ -62,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
             return this.mTitle;
         }
 
+        @Override
+        public int spinnerTitleResId() {
+            return 0;
+        }
+
         public String description() {
             return this.mDescription;
         }
