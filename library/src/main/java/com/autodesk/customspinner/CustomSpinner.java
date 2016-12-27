@@ -3,11 +3,10 @@ package com.autodesk.customspinner;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.ListPopupWindow;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -22,11 +21,11 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
 
     private static final String TAG = "CustomSpinner";
 
-    private int mDrawablePaddingLeft = Util.dpToPx(getContext(), 4f);
+    private int mDrawablePaddingLeft = Util.dpToPx(getContext(), 0f);
     private int mDrawablePaddingTop = Util.dpToPx(getContext(), 0f);
-    private int mDrawablePaddingRight = Util.dpToPx(getContext(), 4f);
+    private int mDrawablePaddingRight = Util.dpToPx(getContext(), 0f);
     private int mDrawablePaddingBottom = Util.dpToPx(getContext(), 0f);
-    private int mDrawableRight = R.drawable.ic_keyboard_arrow_down_white_24dp;
+    private int mDrawableRight = R.drawable.ic_arrow_drop_down_white_24dp;
     private int mDropdownMaxHeight = ListPopupWindow.WRAP_CONTENT;
     private int mDropdownVerticalOffset = Util.dpToPx(getContext(), 8f);
     private int mDropdownWidth = Util.dpToPx(getContext(), 200f);
@@ -34,8 +33,8 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
     private float mSpinnerTextSize;
     private boolean mHideSelectedItem = false;
 
-    private TextView mTitle;
-    private ImageView mIcon;
+    protected TextView mTitle;
+    protected ImageView mIcon;
 
     private CustomSpinnerAdapter<T> mAdapter;
     private ListPopupWindow mPopup;
@@ -51,10 +50,10 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
 
     public CustomSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
+        initCustomSpinner(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    protected void initCustomSpinner(Context context, AttributeSet attrs) {
         inflate(context, R.layout.custom_spinner, this);
         mTitle = (TextView) findViewById(R.id.title);
         mIcon = (ImageView) findViewById(R.id.icon);
@@ -78,21 +77,32 @@ public class CustomSpinner<T extends SpinnerDropDownItem> extends LinearLayout i
         mDropdownMaxHeight = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_max_height, mDropdownMaxHeight);
         mDropdownWidth = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_width, mDropdownWidth);
         mDropdownVerticalOffset = attr.getDimensionPixelSize(R.styleable.CustomSpinner_cs_dropdown_vertical_offset, mDropdownVerticalOffset);
-        mSpinnerTextColor = attr.getColorStateList(R.styleable.CustomSpinner_cs_spinner_text_color);
-        if (mSpinnerTextColor == null) {
-            mSpinnerTextColor = ColorStateList.valueOf(Color.WHITE);
-        }
-        mSpinnerTextSize = attr.getDimension(R.styleable.CustomSpinner_cs_spinner_text_size, getResources().getDimension(R.dimen.spinner_text_size));
+//        mSpinnerTextColor = attr.getColorStateList(R.styleable.CustomSpinner_cs_spinner_text_color);
+//        if (mSpinnerTextColor == null) {
+//            mSpinnerTextColor = ColorStateList.valueOf(Color.WHITE);
+//        }
+//        mSpinnerTextSize = attr.getDimension(R.styleable.CustomSpinner_cs_spinner_text_size, getResources().getDimension(R.dimen.spinner_text_size));
         final int openDirectionEnum = attr.getInteger(R.styleable.CustomSpinner_cs_dropdown_open_direction, 0);
         mPopup.setDropDownGravity(openDirectionEnum == 0 ? GravityCompat.START : GravityCompat.END);
+
+        // Set title text appearance
+        final int textViewStyle = attr.getResourceId(R.styleable.CustomSpinner_cs_spinner_text_appearance, 0);
+        if (textViewStyle != 0) {
+            if (Build.VERSION.SDK_INT < 23) {
+                mTitle.setTextAppearance(context, textViewStyle);
+            } else {
+                mTitle.setTextAppearance(textViewStyle);
+            }
+        }
 
         attr.recycle();
 
         mIcon.setVisibility(GONE);
         mIcon.setImageResource(mDrawableRight);
         mIcon.setPadding(mDrawablePaddingLeft, mDrawablePaddingTop, mDrawablePaddingRight, mDrawablePaddingBottom);
-        mTitle.setTextColor(mSpinnerTextColor);
-        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSpinnerTextSize);
+//        mTitle.setTextColor(mSpinnerTextColor);
+//        mTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSpinnerTextSize);
+
     }
 
     @Override
